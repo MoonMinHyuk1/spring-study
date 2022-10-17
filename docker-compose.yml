@@ -15,14 +15,14 @@ services:
     networks:
       - db_network
     restart: always
-#  redis:
-#    container_name: redis
-#    image: redis:latest
-#    ports:
-#      - "6378:6379"
-#    networks:
-#      - db_network
-#    restart: always
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6378:6379"
+    networks:
+      - db_network
+    restart: always
   spring-boot:
     container_name: study
     build: .
@@ -31,7 +31,7 @@ services:
       - "8081:8080"
     depends_on:
       - mysql
-#      - redis
+      - redis
     networks:
       - db_network
 
