@@ -11,7 +11,6 @@ import spring.study.repository.HelloRepository;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 class StudyApplicationTests {
 	@Autowired
 	private HelloRepository helloRepository;
