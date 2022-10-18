@@ -33,7 +33,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    #github-actions-secret-properties
+    #github-actions-secret properties
     - name: make application-test.properties
       run: |
         cd ./src/test/resources
