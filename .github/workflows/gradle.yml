@@ -33,6 +33,9 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
+    - name: Build with Gradle
+      run: ./gradlew build -x test
+
     #github-actions-secret properties
     - name: make application-test.properties
       run: |
@@ -41,7 +44,5 @@ jobs:
         echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
       shell: bash
 
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build
+    - name: Build with Test
+      run: ./gradlew test
