@@ -38,7 +38,7 @@ jobs:
       run: |
         cd ./src/test/resources
         touch ./application.properties
-        echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
+        echo "${{ secrets.PROPERTIES_TEST }}" > ./application.properties
       shell: bash
 
     - name: Build with Gradle
