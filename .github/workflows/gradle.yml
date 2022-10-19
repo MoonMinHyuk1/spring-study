@@ -1,21 +1,22 @@
-name: Java CI with Gradle
+name: CI/CD
 
 on:
   push: #해당 브랜치에 push 했을 때
     branches:
       - master
+      - dev
   pull_request: #해당 브랜치에 pr 날렸을 때
     branches:
       - master
+      - dev
 
-permissions: write-all
+permissions: write-all #테스트 결과 작성을 위해 쓰기권한 추가
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-
       #jdk 세팅
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -24,13 +25,26 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      #gradle 캐싱 (속도 향상)
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      #gradlew 쓰기 권한 추가
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      #test를 제외한 코드 빌드
       - name: Build with Gradle
         run: ./gradlew build -x test
 
-      #github-actions-secret properties
+      #properties 설정
       #    - name: make application-test.properties
       #      run: |
       #        cd ./src/test/resources
@@ -38,6 +52,7 @@ jobs:
       #        echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
       #      shell: bash
 
+      #test를 위한 mysql설정
       - name: Start MySQL
         uses: samin/mysql-action@v1.3
         with:
@@ -47,9 +62,11 @@ jobs:
           mysql user: 'user'
           mysql password: 'user'
 
+      #test코드 빌드
       - name: Build with Test
         run: ./gradlew test
 
+      #테스트 결과 파일 생성
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ always() }}
