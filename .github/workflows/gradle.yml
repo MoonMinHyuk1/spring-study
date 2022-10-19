@@ -35,21 +35,21 @@ jobs:
       run: ./gradlew build -x test
 
     #github-actions-secret properties
-    - name: make application-test.properties
-      run: |
-        cd ./src/test/resources
-        touch ./application.properties
-        echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
-      shell: bash
+#    - name: make application-test.properties
+#      run: |
+#        cd ./src/test/resources
+#        touch ./application.properties
+#        echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
+#      shell: bash
 
-#    - name: Start MySQL
-#      uses: samin/mysql-action@v1.3
-#      with:
-#        host port: 3305 # Optional, default value is 3306. The port of host
-#        container port: 3305 # Optional, default value is 3306. The port of container
-#        mysql database: 'study' # Optional, default value is "test". The specified database which will be create
-#        mysql user: 'user' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-#        mysql password: 'user' # Required if "mysql user" exists. The password for the "mysql user"
+    - name: Start MySQL
+      uses: samin/mysql-action@v1.3
+      with:
+        host port: 3305 # Optional, default value is 3306. The port of host
+        container port: 3305 # Optional, default value is 3306. The port of container
+        mysql database: 'study' # Optional, default value is "test". The specified database which will be create
+        mysql user: 'user' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+        mysql password: 'user' # Required if "mysql user" exists. The password for the "mysql user"
 
 #        mysql root password: 'root' # Required if "mysql user" is empty, default is empty. The root superuser password
 #        character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
