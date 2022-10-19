@@ -20,7 +20,6 @@ class StudyApplicationTests {
 	@Test
 	public void findByName() {
 		helloRepository.save(new Hello("test"));
-
 		Hello hello = helloRepository.findByName("test");
 		Assertions.assertThat(hello.getName()).isEqualTo("test");
 	}
