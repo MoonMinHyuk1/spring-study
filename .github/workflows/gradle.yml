@@ -103,6 +103,6 @@ jobs:
           envs: GITHUB_SHA
           port: 22
           script: |
-            sudo docker rm -f $(docker ps -qa)
+            docker rm -f $(docker ps -qa)
             docker-compose up -d
             docker image prune -f
