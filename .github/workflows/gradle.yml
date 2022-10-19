@@ -100,6 +100,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
+          envs: GITHUB_SHA
           port: 22
           script: |
             sudo docker rm -f $(docker ps -qa)
+            docker-compose up -d
+            docker image prune -f
