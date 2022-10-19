@@ -79,7 +79,7 @@ jobs:
       ### CD
       #배포를 위한 prod properties 설정
       - name: Make application-prod.properties
-        if: contains(github.ref, 'main')
+        if: contains(github.ref, 'master')
         run: |
           cd ./src/main/resources
           touch ./application-prod.properties
@@ -88,13 +88,14 @@ jobs:
 
       #test를 제외한 코드 빌드 (생략 고민)
       - name: Build With Gradle
+        if: contains(github.ref, 'master')
         run: ./gradlew build -x test
 
       #docker-compose 파일을 ec2 서버에 배포
       - name: Deploy to Prod
         uses: appleboy/ssh-action@master
         id: deploy-prod
-        if: contains(github.ref, 'main')
+        if: contains(github.ref, 'master')
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
