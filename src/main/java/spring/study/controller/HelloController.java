@@ -22,4 +22,10 @@ public class HelloController {
     public String test() {
         return "test";
     }
+
+    @GetMapping("/cd")
+    public String cd() {
+        helloRepository.save(new Hello("CD success"));
+        return "CD success";
+    }
 }

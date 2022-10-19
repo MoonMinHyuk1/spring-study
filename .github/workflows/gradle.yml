@@ -4,10 +4,12 @@ on:
   push: #해당 브랜치에 push 했을 때
     branches:
       - master
+      - main
       - dev
   pull_request: #해당 브랜치에 pr 날렸을 때
     branches:
       - master
+      - main
       - dev
 
 permissions: write-all #테스트 결과 작성을 위해 쓰기권한 추가
@@ -25,7 +27,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      #gradle 캐싱 (속도 향상)
+      #gradle 캐싱
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -36,12 +38,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      ### CI
       #gradlew 쓰기 권한 추가
-      - name: Grant execute permission for gradlew
+      - name: Grant Execute Permission For Gradlew
         run: chmod +x gradlew
 
       #test를 제외한 코드 빌드
-      - name: Build with Gradle
+      - name: Build With Gradle
         run: ./gradlew build -x test
 
       #properties 설정
@@ -63,7 +66,7 @@ jobs:
           mysql password: 'user'
 
       #test코드 빌드
-      - name: Build with Test
+      - name: Build With Test
         run: ./gradlew test
 
       #테스트 결과 파일 생성
@@ -72,3 +75,33 @@ jobs:
         if: ${{ always() }}
         with:
           files: build/test-results/**/*.xml
+
+      ### CD
+      #배포를 위한 prod properties 설정
+      - name: Make application-prod.properties
+        if: contains(github.ref, 'main')
+        run: |
+          cd ./src/main/resources
+          touch ./application-prod.properties
+          echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.properties
+        shell: bash
+
+      #test를 제외한 코드 빌드 (생략 고민)
+      - name: Build With Gradle
+        run: ./gradlew build -x test
+
+      #docker-compose 파일을 ec2 서버에 배포
+      - name: Deploy to Prod
+        uses: appleboy/ssh-action@master
+        id: deploy-prod
+        if: contains(github.ref, 'main')
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          port: 22
+          script: |
+            sudo docker rm -f $(docker ps -qa)
+#            sudo docker pull ${{ secrets.DOCKER_REPO }}/dotoriham-prod
+            docker-compose up -d
+            docker image prune -f
