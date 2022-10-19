@@ -91,7 +91,7 @@ jobs:
         if: contains(github.ref, 'master')
         run: ./gradlew build -x test
 
-      #docker-compose 파일을 ec2 서버에 배포
+      #docker-compose 파일을 ec2 서버에 배포 #sudo docker pull ${{ secrets.DOCKER_REPO }}/dotoriham-prod
       - name: Deploy to Prod
         uses: appleboy/ssh-action@master
         id: deploy-prod
@@ -103,6 +103,5 @@ jobs:
           port: 22
           script: |
             sudo docker rm -f $(docker ps -qa)
-#            sudo docker pull ${{ secrets.DOCKER_REPO }}/dotoriham-prod
             docker-compose up -d
             docker image prune -f
