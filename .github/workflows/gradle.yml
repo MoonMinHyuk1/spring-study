@@ -110,6 +110,5 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/pickrap
-            docker-compose up -d
+            docker-compose -f study/docker-compose.yml up -d
             docker image prune -f
