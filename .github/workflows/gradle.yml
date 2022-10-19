@@ -1,66 +1,57 @@
 name: Java CI with Gradle
 
 on:
-  push:
+  push: #해당 브랜치에 push 했을 때
     branches:
       - master
-  pull_request:
+  pull_request: #해당 브랜치에 pr 날렸을 때
     branches:
       - master
-
-#permissions:
-#  contents: read
 
 permissions: write-all
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
 
-    #jdk setting
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
+      #jdk 세팅
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build -x test
+      - name: Build with Gradle
+        run: ./gradlew build -x test
 
-    #github-actions-secret properties
-#    - name: make application-test.properties
-#      run: |
-#        cd ./src/test/resources
-#        touch ./application.properties
-#        echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
-#      shell: bash
+      #github-actions-secret properties
+      #    - name: make application-test.properties
+      #      run: |
+      #        cd ./src/test/resources
+      #        touch ./application.properties
+      #        echo "${{ secrets.PROPERTIES_TEST }}" > ./application-test.properties
+      #      shell: bash
 
-    - name: Start MySQL
-      uses: samin/mysql-action@v1.3
-      with:
-        host port: 3305 # Optional, default value is 3306. The port of host
-        container port: 3305 # Optional, default value is 3306. The port of container
-        mysql database: 'study' # Optional, default value is "test". The specified database which will be create
-        mysql user: 'user' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-        mysql password: 'user' # Required if "mysql user" exists. The password for the "mysql user"
+      - name: Start MySQL
+        uses: samin/mysql-action@v1.3
+        with:
+          host port: 3305
+          container port: 3305
+          mysql database: 'study'
+          mysql user: 'user'
+          mysql password: 'user'
 
-#        mysql root password: 'root' # Required if "mysql user" is empty, default is empty. The root superuser password
-#        character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-#        collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-#        mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+      - name: Build with Test
+        run: ./gradlew test
 
-    - name: Build with Test
-      run: ./gradlew test
-
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
-      with:
-        files: build/test-results/**/*.xml
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ always() }}
+        with:
+          files: build/test-results/**/*.xml
