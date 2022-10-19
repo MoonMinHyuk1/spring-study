@@ -15,8 +15,10 @@ on:
     branches:
       - master
 
-permissions:
-  contents: read
+#permissions:
+#  contents: read
+
+permissions: write-all
 
 jobs:
   build:
