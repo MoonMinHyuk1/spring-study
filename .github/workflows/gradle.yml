@@ -105,4 +105,5 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           port: 22
           script: |
+            sudo service ssh restart
             ls
