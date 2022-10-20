@@ -99,7 +99,7 @@ jobs:
           docker build -f Dockerfile -t ${{ secrets.DOCKER_HUB_ID }}/pickrap .
           docker push ${{ secrets.DOCKER_HUB_ID }}/pickrap
 
-      #docker-compose 파일을 ec2 서버에 배포 #sudo docker pull ${{ secrets.DOCKER_REPO }}/dotoriham-prod
+      #docker-compose 파일을 ec2 서버에 배포 #docker-compose -f docker-ec2-test/docker-compose.yml up -d
       - name: Deploy to Prod
         uses: appleboy/ssh-action@master
         id: deploy-prod
@@ -110,5 +110,8 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            docker-compose -f docker-ec2-test/docker-compose.yml up -d
+            cd spring-study
+            git checkout Feat/#1
+            git pull origin Feat/#1
+            docker-compose up -d
             docker image prune -f
