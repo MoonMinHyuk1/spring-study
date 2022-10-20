@@ -6,11 +6,10 @@ on:
       - master
       - main
       - dev
-  pull_request: #해당 브랜치에 pr 날렸을 때
+  pull_request: #해당 브랜치에서 pr 날렸을 때
     branches:
       - master
       - main
-      - dev
 
 permissions: write-all #테스트 결과 작성을 위해 쓰기권한 추가
 
