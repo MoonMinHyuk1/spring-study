@@ -115,3 +115,5 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f $(docker ps -qa)
+            docker-compose -f spring-study/docker-compose.yml up -d
+            docker image prune -f
