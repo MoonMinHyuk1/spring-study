@@ -25,7 +25,7 @@ public class HelloController {
 
     @GetMapping("/cd")
     public String cd() {
-        helloRepository.save(new Hello("CD success"));
-        return "CD success";
+        helloRepository.save(new Hello("CD success123"));
+        return "CD success123";
     }
 }
