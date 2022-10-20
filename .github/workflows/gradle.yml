@@ -111,6 +111,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          port: 22
+          timeout: 300s
+          command_timeout: 100m
+          script_stop: false
           script: |
             ls
