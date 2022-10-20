@@ -111,7 +111,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
             cd spring-study
-            git checkout Feat/#1
-            git pull origin Feat/#1
+            git checkout dev
+            git pull origin dev
             docker-compose up -d
             docker image prune -f
