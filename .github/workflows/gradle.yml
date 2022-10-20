@@ -102,6 +102,7 @@ jobs:
 
       #            git checkout dev
       #            git pull origin dev
+      #            cd spring-study
       #docker-compose 파일을 ec2 서버에 배포 #docker-compose -f docker-ec2-test/docker-compose.yml up -d
       - name: Deploy to Prod
         uses: appleboy/ssh-action@master
@@ -113,6 +114,5 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            cd spring-study
             docker-compose up -d
             docker image prune -f
