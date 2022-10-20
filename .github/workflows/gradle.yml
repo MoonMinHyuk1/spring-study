@@ -113,7 +113,6 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            ls
             cd spring-study
             git checkout dev
             git pull origin dev
