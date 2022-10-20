@@ -114,6 +114,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
+            ls
             sudo docker rm -f $(docker ps -qa)
             docker-compose -f spring-study/docker-compose.yml up -d
             docker image prune -f
