@@ -113,9 +113,4 @@ jobs:
           password: ${{ secrets.EC2_PASSWORD }}
           envs: GITHUB_SHA
           script: |
-            cd spring-study
-            git checkout dev
-            git pull origin dev
-            ./gradlew build -x test
-            docker-compose up -d
-            docker image prune -f
+            ls
