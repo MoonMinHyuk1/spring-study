@@ -91,19 +91,19 @@ jobs:
         if: contains(github.ref, 'master')
         run: ./gradlew build -x test
 
-#      #도커 빌드 & 이미지 push
-#      - name: Docker build & push to prod
-#        if: contains(github.ref, 'master')
-#        run: |
-#          docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PASSWORD }}
-#          docker build -f Dockerfile -t ${{ secrets.DOCKER_HUB_ID }}/pickrap .
-#          docker push ${{ secrets.DOCKER_HUB_ID }}/pickrap
+      #      #도커 빌드 & 이미지 push
+      #      - name: Docker build & push to prod
+      #        if: contains(github.ref, 'master')
+      #        run: |
+      #          docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #          docker build -f Dockerfile -t ${{ secrets.DOCKER_HUB_ID }}/pickrap .
+      #          docker push ${{ secrets.DOCKER_HUB_ID }}/pickrap
 
 
       #            git checkout dev
       #            git pull origin dev
       #            cd spring-study
-      #docker-compose 파일을 ec2 서버에 배포 #docker-compose -f docker-ec2-test/docker-compose.yml up -d 1
+      #docker-compose 파일을 ec2 서버에 배포 #docker-compose -f docker-ec2-test/docker-compose.yml up -d
       - name: Deploy to Prod
         uses: appleboy/ssh-action@master
         id: deploy-prod
@@ -115,3 +115,9 @@ jobs:
           envs: GITHUB_SHA
           script: |
             ls
+            cd spring-study
+            git checkout dev
+            git pull origin dev
+            ./gradlew build -x test
+            docker-compose -f spring-study/docker-compose.yml up -d
+            docker image prune -f
