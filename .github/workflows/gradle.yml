@@ -113,7 +113,6 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
-          port: 22
           script: |
-            docker-compose -f docker-ec2-test/docker-compose.yml up -d
+            docker-compose -f spring-study/docker-compose.yml up -d
             docker image prune -f
