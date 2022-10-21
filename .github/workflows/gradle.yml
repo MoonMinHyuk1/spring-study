@@ -6,7 +6,7 @@ on:
       - master
       - main
       - dev
-  pull_request: #해당 브랜치에서 pr 날렸을 때
+  pull_request: #해당 브랜치로 pr 왔을 때
     branches:
       - main
 
@@ -101,10 +101,10 @@ jobs:
           envs: GITHUB_SHA
           script: |
             pwd
-            docker stop xenodochial_hodgkin
-            docker rm xenodochial_hodgkin
+            docker stop zen_dirac
+            docker rm zen_dirac
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/pickrap
-            docker run -d -p 8080:8080 moonminhyuk1/pickrap --name pickrap
+            docker run -d --name pickrap -p 8080:8080 moonminhyuk1/pickrap
             docker image prune -f
             docker ps
             docker images
