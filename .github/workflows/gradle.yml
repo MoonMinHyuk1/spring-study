@@ -101,6 +101,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
             pwd
+            docker stop xenodochial_hodgkin
             docker rm xenodochial_hodgkin
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/pickrap
             docker run -d -p 8080:8080 moonminhyuk1/pickrap --name pickrap
