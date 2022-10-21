@@ -80,6 +80,19 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew build -x test
 
+      #test를 제외한 코드 빌드
+      - name: Build With Gradle
+        if: contains(github.ref, 'master')
+        run: ./gradlew build -x test
+
+      #도커 빌드 & 이미지 push
+      - name: Docker build & Push to prod
+        if: contains(github.ref, 'master')
+        run: |
+          docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_HUB_ID }}/pickrap .
+          docker push ${{ secrets.DOCKER_HUB_ID }}/pickrap
+
       #docker-compose 파일을 ec2 서버에 배포
       - name: Deploy to Prod
         uses: appleboy/ssh-action@master
@@ -91,4 +104,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            ls
+            pwd
+            sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/pickrap
+            docker run -d -p 8080:8080 moonminhyuk1/pickrap
+            docker image prune -f
