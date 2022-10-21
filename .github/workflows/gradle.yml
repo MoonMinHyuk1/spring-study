@@ -8,7 +8,6 @@ on:
       - dev
   pull_request: #해당 브랜치에서 pr 날렸을 때
     branches:
-      - master
       - main
 
 permissions: write-all #테스트 결과 작성을 위해 쓰기권한 추가
@@ -102,6 +101,9 @@ jobs:
           envs: GITHUB_SHA
           script: |
             pwd
+            docker rm xenodochial_hodgkin
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/pickrap
-            docker run -d -p 8080:8080 moonminhyuk1/pickrap
+            docker run -d -p 8080:8080 moonminhyuk1/pickrap --name pickrap
             docker image prune -f
+            docker ps
+            docker images
