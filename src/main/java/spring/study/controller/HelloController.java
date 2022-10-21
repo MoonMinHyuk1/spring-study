@@ -28,4 +28,10 @@ public class HelloController {
         helloRepository.save(new Hello("CD success!!!"));
         return "CD success!!!";
     }
+
+    @GetMapping("/github-actions")
+    public String githubActions() {
+        helloRepository.save(new Hello("github-actions Clear!"));
+        return "github-actions Clear!";
+    }
 }

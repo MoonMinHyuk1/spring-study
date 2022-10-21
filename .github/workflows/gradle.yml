@@ -77,9 +77,6 @@ jobs:
           echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.properties
         shell: bash
 
-      - name: Build With Gradle
-        run: ./gradlew build -x test
-
       #test를 제외한 코드 빌드
       - name: Build With Gradle
         if: contains(github.ref, 'master')
