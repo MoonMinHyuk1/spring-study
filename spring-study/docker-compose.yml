@@ -1,0 +1,145 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql_study
+    image: mysql/mysql-server:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: study
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    command:
+      - --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3304:3306"
+    networks:
+      - db_network
+    restart: always
+  redis:
+    container_name: redis_study
+    image: redis:latest
+    ports:
+      - "6377:6379"
+    networks:
+      - db_network
+    restart: always
+
+#  spring-boot:
+#    container_name: study
+#    build: .
+#    restart: always
+#    ports:
+#      - "8081:8080"
+#    depends_on:
+##      - mysql
+#      - redis
+#    networks:
+#      - db_network
+
+networks:
+  db_network:
+    driver: bridge
+
+#version: '2'
+#
+#networks:
+#  db_network:
+#    driver: bridge
+#
+#services:
+#  redis:
+#    container_name: redis
+#    image: 'bitnami/redis:latest'
+#    environment:
+#      - REDIS_REPLICATION_MODE=master
+#      - ALLOW_EMPTY_PASSWORD=yes
+#    volumes:
+#      - ./data/redis:/bitnami/redis
+#    networks:
+#      - db_network
+#    ports:
+#      - 6379:6379
+#  redis-slave-1:
+#    container_name: redis-slave-1
+#    image: 'bitnami/redis:latest'
+#    environment:
+#      - REDIS_REPLICATION_MODE=slave
+#      - REDIS_MASTER_HOST=redis
+#      - ALLOW_EMPTY_PASSWORD=yes
+#    volumes:
+#      - ./data/redis1:/bitnami/redis
+#    ports:
+#      - 6380:6379
+#    depends_on:
+#      - redis
+#    networks:
+#      - db_network
+#  redis-slave-2:
+#    container_name: redis-slave-2
+#    image: 'bitnami/redis:latest'
+#    environment:
+#      - REDIS_REPLICATION_MODE=slave
+#      - REDIS_MASTER_HOST=redis
+#      - ALLOW_EMPTY_PASSWORD=yes
+#    volumes:
+#      - ./data/redis2:/bitnami/redis
+#    ports:
+#      - 6381:6379
+#    depends_on:
+#      - redis
+#    networks:
+#      - db_network
+#
+#  redis-sentinel-1:
+#    container_name: redis-sentinel-1
+#    image: 'bitnami/redis-sentinel:latest'
+#    environment:
+#      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+#      - REDIS_MASTER_HOST=redis
+#      - REDIS_MASTER_PORT_NUMBER=6379
+#      - REDIS_MASTER_SET=mymaster
+#      - REDIS_SENTINEL_QUORUM=2
+#    depends_on:
+#      - redis
+#      - redis-slave-1
+#      - redis-slave-2
+#    ports:
+#      - 26379:26379
+#    networks:
+#      - db_network
+#
+#  redis-sentinel-2:
+#    container_name: redis-sentinel-2
+#    image: 'bitnami/redis-sentinel:latest'
+#    environment:
+#      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+#      - REDIS_MASTER_HOST=redis
+#      - REDIS_MASTER_PORT_NUMBER=6379
+#      - REDIS_MASTER_SET=mymaster
+#      - REDIS_SENTINEL_QUORUM=2
+#    depends_on:
+#      - redis
+#      - redis-slave-1
+#      - redis-slave-2
+#    ports:
+#      - 26380:26379
+#    networks:
+#      - db_network
+#
+#  redis-sentinel-3:
+#    container_name: redis-sentinel-3
+#    image: 'bitnami/redis-sentinel:latest'
+#    environment:
+#      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+#      - REDIS_MASTER_HOST=redis
+#      - REDIS_MASTER_PORT_NUMBER=6379
+#      - REDIS_MASTER_SET=mymaster
+#      - REDIS_SENTINEL_QUORUM=2
+#    depends_on:
+#      - redis
+#      - redis-slave-1
+#      - redis-slave-2
+#    ports:
+#      - 26381:26379
+#    networks:
+#      - db_network
