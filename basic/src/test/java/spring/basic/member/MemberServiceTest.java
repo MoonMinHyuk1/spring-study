@@ -2,14 +2,15 @@ package spring.basic.member;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import spring.basic.config.AppConfig;
 import spring.basic.domain.member.Grade;
 import spring.basic.domain.member.Member;
 import spring.basic.service.member.MemberService;
-import spring.basic.service.member.MemberServiceImpl;
 
 public class MemberServiceTest {
 
-    MemberService memberService = new MemberServiceImpl();
+    AppConfig appConfig = new AppConfig();
+    MemberService memberService = appConfig.memberService();
     @Test
     void join() {
         //given

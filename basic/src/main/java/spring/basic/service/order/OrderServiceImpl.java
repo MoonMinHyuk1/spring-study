@@ -3,14 +3,17 @@ package spring.basic.service.order;
 import spring.basic.domain.Order;
 import spring.basic.domain.member.Member;
 import spring.basic.repository.discount.DiscountPolicy;
-import spring.basic.repository.discount.FixDiscountPolicy;
 import spring.basic.repository.member.MemberRepository;
-import spring.basic.repository.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {

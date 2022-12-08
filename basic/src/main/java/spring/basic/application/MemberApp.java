@@ -1,14 +1,15 @@
 package spring.basic.application;
 
+import spring.basic.config.AppConfig;
 import spring.basic.domain.member.Grade;
 import spring.basic.domain.member.Member;
 import spring.basic.service.member.MemberService;
-import spring.basic.service.member.MemberServiceImpl;
 
 public class MemberApp {
 
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
 
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);

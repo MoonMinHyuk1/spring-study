@@ -2,18 +2,18 @@ package spring.basic.order;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import spring.basic.config.AppConfig;
 import spring.basic.domain.Order;
 import spring.basic.domain.member.Grade;
 import spring.basic.domain.member.Member;
 import spring.basic.service.member.MemberService;
-import spring.basic.service.member.MemberServiceImpl;
 import spring.basic.service.order.OrderService;
-import spring.basic.service.order.OrderServiceImpl;
 
 public class OrderServiceTest {
 
-    MemberService memberService = new MemberServiceImpl();
-    OrderService orderService = new OrderServiceImpl();
+    AppConfig appConfig = new AppConfig();
+    MemberService memberService = appConfig.memberService();
+    OrderService orderService = appConfig.orderService();
 
     @Test
     void createOrder() {
