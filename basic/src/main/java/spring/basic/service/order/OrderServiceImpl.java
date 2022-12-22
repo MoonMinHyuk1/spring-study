@@ -1,15 +1,19 @@
 package spring.basic.service.order;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import spring.basic.domain.Order;
 import spring.basic.domain.member.Member;
 import spring.basic.repository.discount.DiscountPolicy;
 import spring.basic.repository.member.MemberRepository;
 
+@Component
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
