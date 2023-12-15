@@ -2,6 +2,7 @@ package spring.stock.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import spring.stock.domain.Stock;
 import spring.stock.repository.StockRepository;
@@ -12,7 +13,7 @@ public class StockService {
 
     private final StockRepository stockRepository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void decrease(Long id, Long quantity) {
         // Stock 조회
         // 재고 감소
