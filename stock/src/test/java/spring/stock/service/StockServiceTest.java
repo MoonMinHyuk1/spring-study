@@ -74,4 +74,28 @@ class StockServiceTest {
         // 값을 갱신하기 전에 다른 thread가 공유 데이터에 접근하기에 갱신이 누락된다.
         assertThat(stock.getQuantity()).isEqualTo(0L);
     }
+
+    @Test
+    public void 동시에_100개의_요청_SYNC() throws InterruptedException {
+        //given
+        int threadCount = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        //when
+        for(int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    stockService.syncDecrease(1L, 1L);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        //then
+        Stock stock = stockRepository.findById(1L).orElseThrow();
+        assertThat(stock.getQuantity()).isEqualTo(0L);
+    }
 }
