@@ -20,6 +20,7 @@ spring:
       maximum-pool-size: 40
 
   redis:
+    prefix: redis://
     host: localhost
     port: 6374
 
