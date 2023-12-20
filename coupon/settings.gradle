@@ -1,0 +1,6 @@
+rootProject.name = 'coupon'
+include 'api'
+include 'api'
+include 'api'
+include 'api'
+
