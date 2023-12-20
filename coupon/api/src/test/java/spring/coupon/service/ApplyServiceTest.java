@@ -103,6 +103,7 @@ class ApplyServiceTest {
             });
         }
         latch.await();
+        Thread.sleep(1000);
 
         //then
         long count = couponRepository.count();
