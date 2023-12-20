@@ -1,6 +1,6 @@
 spring:
-#  application:
-#    name: stock
+  application:
+    name: coupon
 
   jpa:
     database: mysql
@@ -18,3 +18,18 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 40
+
+  redis:
+    prefix: redis://
+    host: localhost
+    port: 6374
+
+  logging:
+    level:
+      org:
+        hibernate:
+          SQL: DEBUG
+          type:
+            descriptor:
+              sql:
+                BasicBinder: TRACE
