@@ -83,4 +83,29 @@ class ApplyServiceTest {
         long count = couponRepository.count();
         assertThat(count).isEqualTo(100L);
     }
+
+    @Test
+    public void 여러명응모_카프카() throws InterruptedException {
+        //given
+        int threadCount = 1000;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        //when
+        for(int i = 0; i < threadCount; i++) {
+            long userId = i;
+            executorService.submit(() -> {
+                try {
+                    applyService.applyWithKafka(userId);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        //then
+        long count = couponRepository.count();
+        assertThat(count).isEqualTo(100L);
+    }
 }
