@@ -15,6 +15,21 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
+    /**
+     * Kafka란?
+     * 분산 이벤트 스트리밍 플랫폼
+     * 이벤트 스트리밍이란 소스에서 목적지까지 이벤트를 실시간으로 스트리밍 하는 것
+     *
+     * 토픽생성
+     * docker exec -it kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic testTopic
+     *
+     * 프로듀서 실행
+     * docker exec -it kafka kafka-console-producer.sh --topic testTopic --broker-list 0.0.0.0:9092
+     *
+     * 컨슈머 실행
+     * docker exec -it kafka kafka-console-consumer.sh --topic testTopic --bootstrap-server localhost:9092
+     */
+
     @Bean
     public ProducerFactory<String, Long> producerFactory() {    //producer 인스턴스를 생성하는데 필요한 설정 값
         Map<String, Object> config = new HashMap<>();
