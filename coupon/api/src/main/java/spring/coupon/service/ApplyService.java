@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.coupon.domain.Coupon;
 import spring.coupon.producer.CouponCreateProducer;
+import spring.coupon.repository.AppliedUserRepository;
 import spring.coupon.repository.CouponCountRepository;
 import spring.coupon.repository.CouponRepository;
 
@@ -16,6 +17,8 @@ public class ApplyService {
     private final CouponCountRepository couponCountRepository;
 
     private final CouponCreateProducer couponCreateProducer;
+
+    private final AppliedUserRepository appliedUserRepository;
 
     public void apply(Long userId) {
         long count = couponRepository.count();
@@ -52,6 +55,20 @@ public class ApplyService {
         }
 
         // db 와는 관계없이 토픽에 userId를 전송한다.
+        couponCreateProducer.create(userId);
+    }
+
+    public void applyNotDuplication(Long userId) {
+        Long apply = appliedUserRepository.add(userId);
+        if(apply != 1) {
+            return;
+        }
+
+        Long count = couponCountRepository.increment();
+        if(count > 100) {
+            return;
+        }
+
         couponCreateProducer.create(userId);
     }
 }

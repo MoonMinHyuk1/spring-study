@@ -109,4 +109,29 @@ class ApplyServiceTest {
         long count = couponRepository.count();
         assertThat(count).isEqualTo(100L);
     }
+
+    @Test
+    public void 여러명응모_중복X() throws InterruptedException {
+        //given
+        int threadCount = 1000;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        //when
+        for(int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    applyService.applyNotDuplication(1L);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+        Thread.sleep(1000);
+
+        //then
+        long count = couponRepository.count();
+        assertThat(count).isEqualTo(1L);
+    }
 }
