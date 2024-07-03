@@ -19,3 +19,9 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//war 풀기, IntelliJ Community
+task explodedWar(type: Copy) {
+    into "$buildDir/exploded"
+    with war
+}
