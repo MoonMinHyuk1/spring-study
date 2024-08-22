@@ -11,6 +11,11 @@ eureka:
 spring:
   application:
     name: gateway-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     gateway:
       routes:
@@ -34,3 +39,10 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/user-service/**
+
+#RabbitMQ
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh

@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: user-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   instance:
@@ -13,3 +18,17 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+
+##Actuator
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh, health, beans, info
+
+#RabbitMQ
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
