@@ -1,6 +1,6 @@
 token:
   expiration-time: 86400000 # 하루짜리 토큰 생성
-  secret: secret-key
+  secret: msa-practice-secret-key
 
 gateway:
   ip: 123.456.789.101
